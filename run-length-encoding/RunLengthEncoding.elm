@@ -20,11 +20,14 @@ version =
 
 encode : String -> String
 encode str =
-    str
-        |> makeIndexMap
-        |> setAccValue
-        |> mapEncoded
-        |> makeIntoString
+    if Regex.contains (Regex.regex " ") str then
+        str
+    else
+        str
+            |> makeIndexMap
+            |> setAccValue
+            |> mapEncoded
+            |> makeIntoString
 
 
 
@@ -87,9 +90,12 @@ makeIntoString =
 
 decode : String -> String
 decode str =
-    str
-        |> parseEncoded
-        |> intoString
+    if Regex.contains (Regex.regex " ") str then
+        str
+    else
+        str
+            |> parseEncoded
+            |> intoString
 
 
 
@@ -98,7 +104,7 @@ decode str =
 
 parseEncoded : String -> List String
 parseEncoded =
-    List.map .match << Regex.find Regex.All (Regex.regex "(\\d+)?(\\w)")
+    List.map .match << Regex.find Regex.All (Regex.regex "(\\d+)?(\\w|\\u23F0|\\u26BD|\\u2B50)")
 
 
 parseNum : String -> Int
